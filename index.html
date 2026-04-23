@@ -88,21 +88,32 @@
   }
 
   function submitData() {
-    let csr = document.getElementById("csrName").value;
+    let csr = document.getElementById("csrName").value.trim();
     let rows = document.querySelectorAll(".product-row");
 
     let products = [];
 
     rows.forEach(row => {
-      let code = row.querySelector(".code").value;
-      let productValue = row.querySelector(".productValue").value;
-      let amcValue = row.querySelector(".amcValue").value;
+      let code = row.querySelector(".code").value.trim();
+      let productValue = row.querySelector(".productValue").value.trim();
+      let amcValue = row.querySelector(".amcValue").value.trim();
       let plan = row.querySelector(".plan").value;
 
       if (code && productValue && amcValue && plan) {
         products.push({code, productValue, amcValue, plan});
       }
     });
+
+    // ✅ Validation
+    if (!csr) {
+      alert("Please enter CSR Name");
+      return;
+    }
+
+    if (products.length === 0) {
+      alert("Please add at least one complete product");
+      return;
+    }
 
     let data = {
       csrName: csr,
@@ -111,17 +122,23 @@
 
     fetch("https://script.google.com/macros/s/AKfycbzFGWffjcsYRW1kcH__gAFX4gFJwIUrjbp8NYq51yhAC77P0glw8GxIDOKQGXQQ5qtYhg/exec", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(data)
     })
-    .then(res => res.text())
-    .then(res => {
+    .then(response => response.text())
+    .then(result => {
       alert("Submitted successfully!");
       location.reload();
     })
-    .catch(err => alert("Error submitting data"));
+    .catch(error => {
+      console.error(error);
+      alert("Error submitting data");
+    });
   }
 
-  // Add first row by default
+  // Add first row automatically
   addProduct();
 </script>
 
