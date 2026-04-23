@@ -73,7 +73,8 @@
 
     div.innerHTML = `
       <input placeholder="Product Code" class="code">
-      <input placeholder="AMC Value" type="number" class="value">
+      <input placeholder="Product Value" type="number" class="productValue">
+      <input placeholder="AMC Value" type="number" class="amcValue">
       <select class="plan">
         <option value="">Select AMC Plan</option>
         <option>Platinum 1 Year</option>
@@ -94,11 +95,12 @@
 
     rows.forEach(row => {
       let code = row.querySelector(".code").value;
-      let value = row.querySelector(".value").value;
+      let productValue = row.querySelector(".productValue").value;
+      let amcValue = row.querySelector(".amcValue").value;
       let plan = row.querySelector(".plan").value;
 
-      if (code && value && plan) {
-        products.push({code, value, plan});
+      if (code && productValue && amcValue && plan) {
+        products.push({code, productValue, amcValue, plan});
       }
     });
 
